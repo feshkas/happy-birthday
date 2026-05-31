@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>С Днём Рождения, Мамочка!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    }
+    .font-comfortaa {
+      font-family: 'Comfortaa', cursive;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+    .candle-glow {
+      box-shadow: 0 0 8px 3px rgba(251, 191, 36, 0.6), 0 0 15px 5px rgba(245, 158, 11, 0.4);
+    }
+    /* исправление для касаний на телефоне */
+    button, [onclick] {
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-3 md:p-4 bg-rose-50/50">
+
+  <!-- Фон -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute w-64 h-64 bg-pink-200/30 rounded-full blur-3xl -top-20 -left-20"></div>
+    <div class="absolute w-80 h-80 bg-rose-200/20 rounded-full blur-3xl -bottom-20 -right-20"></div>
+  </div>
+
+  <main class="w-full max-w-2xl mx-auto z-10 px-2">
+    
+    <!-- КОНВЕРТ (СЦЕНА 1) -->
+    <section id="envelope-scene" class="flex flex-col items-center justify-center text-center py-6">
+      <h1 class="text-2xl sm:text-4xl font-bold text-rose-600 font-comfortaa mb-3 animate-bounce">
+        Мамочка, тебе письмо! 💌
+      </h1>
+      <p class="text-gray-600 mb-6 max-w-xs text-sm">
+        Я приготовила для тебя кое-что особенное.<br>Открой конверт 🎉
+      </p>
+
+      <div onclick="openEnvelope()" class="cursor-pointer group w-full max-w-[280px] mx-auto">
+        <div class="animate-float bg-white rounded-2xl shadow-2xl border border-rose-100 flex flex-col items-center justify-center p-6 hover:shadow-rose-200 transition-all transform group-hover:scale-105">
+          <div class="w-20 h-20 bg-rose-500 rounded-full flex items-center justify-center shadow-lg">
+            <i data-lucide="heart" class="w-10 h-10 text-white fill-current animate-pulse"></i>
+          </div>
+          <div class="mt-4 text-rose-500 font-semibold font-comfortaa text-base">Открыть открытку</div>
+          <p class="text-xs text-gray-400 mt-1">Нажми на сердечко</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ОТКРЫТКА (СЦЕНА 2) -->
+    <section id="card-scene" class="hidden space-y-5">
+      
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-pink-100 text-center animate-fade-in">
+        <h2 class="text-2xl sm:text-3xl font-bold text-rose-600 font-comfortaa mb-2">
+          С Днём Рождения, Мамочка!
+        </h2>
+        <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
+          Дорогая моя, любимая мама! Сегодня особенный день, и я сделала этот сайт специально для тебя.<br>
+          Ты — самое ценное в моей жизни. Спасибо за твою заботу, тепло и безграничную любовь. 💖
+        </p>
+        <div class="mt-3 text-rose-400 text-xs font-semibold">С любовью, твоя дочь</div>
+      </div>
+
+      <!-- ТОРТ со СВЕЧАМИ (адаптивный) -->
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-pink-100 text-center animate-fade-in" style="animation-delay: 0.05s">
+        <h3 class="text-lg sm:text-xl font-bold text-rose-700 font-comfortaa">🎈 Загадай желание и задуй свечу!</h3>
+        <p class="text-xs text-gray-500 mb-4">Кликни на каждое пламя 🎉</p>
+        
+        <div class="flex justify-center items-end gap-6 sm:gap-10 mb-2">
+          <!-- Свеча 1 -->
+          <div onclick="extinguishCandle(1)" id="candle-1" class="cursor-pointer flex flex-col items-center">
+            <div id="flame-1" class="w-4 h-6 bg-amber-400 rounded-full candle-glow animate-pulse transition-all duration-200"></div>
+            <div class="w-2.5 h-12 sm:h-14 bg-gradient-to-b from-pink-400 to-pink-500 rounded-t-sm mt-[-2px]"></div>
+          </div>
+          <!-- Свеча 2 -->
+          <div onclick="extinguishCandle(2)" id="candle-2" class="cursor-pointer flex flex-col items-center">
+            <div id="flame-2" class="w-4 h-6 bg-amber-400 rounded-full candle-glow animate-pulse transition-all duration-200"></div>
+            <div class="w-2.5 h-14 sm:h-16 bg-gradient-to-b from-yellow-300 to-amber-400 rounded-t-sm mt-[-2px]"></div>
+          </div>
+          <!-- Свеча 3 -->
+          <div onclick="extinguishCandle(3)" id="candle-3" class="cursor-pointer flex flex-col items-center">
+            <div id="flame-3" class="w-4 h-6 bg-amber-400 rounded-full candle-glow animate-pulse transition-all duration-200"></div>
+            <div class="w-2.5 h-12 sm:h-14 bg-gradient-to-b from-purple-400 to-purple-500 rounded-t-sm mt-[-2px]"></div>
+          </div>
+        </div>
+
+        <!-- Торт (простой, но милый) -->
+        <div class="w-full max-w-[220px] mx-auto">
+          <div class="h-6 bg-rose-100 rounded-full border-b-2 border-rose-200 flex justify-center gap-2 text-xs">
+            🍓 🍒 🍓
+          </div>
+          <div class="bg-gradient-to-b from-pink-300 to-pink-400 rounded-b-xl py-2 text-white text-[10px] font-bold">
+            HAPPY BIRTHDAY
+          </div>
+          <div class="h-2 bg-gray-200 rounded-full mt-1"></div>
+        </div>
+
+        <div id="cake-success-msg" class="hidden text-rose-600 font-bold font-comfortaa text-base animate-bounce mt-3">
+          ✨ Ура! Пусть все мечты исполнятся! 💖
+        </div>
+      </div>
+
+      <!-- ХАРАКТЕРИСТИКИ МАМЫ -->
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-pink-100 animate-fade-in" style="animation-delay: 0.1s">
+        <h3 class="text-lg font-bold text-rose-700 font-comfortaa text-center flex justify-center gap-2">
+          <i data-lucide="shield-check"></i> Супер-Мама
+        </h3>
+        <div class="space-y-3 mt-3">
+          <div><div class="flex justify-between text-sm"><span>Любовь & Нежность</span><span class="text-rose-600">∞%</span></div><div class="bg-rose-100 h-2 rounded-full"><div class="bg-rose-400 h-2 rounded-full w-full"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span>Терпение</span><span class="text-rose-600">999 Level</span></div><div class="bg-rose-100 h-2 rounded-full"><div class="bg-rose-400 h-2 rounded-full w-full"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span>Кулинарная Магия</span><span class="text-rose-600">Master Class</span></div><div class="bg-rose-100 h-2 rounded-full"><div class="bg-rose-400 h-2 rounded-full w-full"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span>Попалочка Богатство</span><span class="text-rose-600">✨ безлимит ✨</span></div><div class="bg-rose-100 h-2 rounded-full"><div class="bg-rose-400 h-2 rounded-full w-full"></div></div></div>
+        </div>
+      </div>
+
+      <!-- СВИТОК ПОЖЕЛАНИЙ -->
+      <div class="bg-gradient-to-br from-rose-500 to-pink-600 text-white rounded-2xl p-5 text-center animate-fade-in" style="animation-delay: 0.15s">
+        <h3 class="text-lg font-bold font-comfortaa">🌸 Свиток Тёплых Слов 🌸</h3>
+        <div class="bg-white/20 rounded-xl p-4 my-3 min-h-[80px] flex items-center justify-center">
+          <p id="wish-display" class="text-base font-medium transition-opacity duration-200">Нажми кнопку — получи нежность ✨</p>
+        </div>
+        <button onclick="getNewWish()" class="bg-white text-rose-600 px-5 py-2 rounded-full font-bold shadow-md active:scale-95 flex items-center justify-center gap-2 mx-auto text-sm">
+          <i data-lucide="gift"></i> Пожелание
+        </button>
+      </div>
+
+      <!-- МУЗЫКА -->
+      <div class="flex justify-center pb-4">
+        <button id="music-btn" onclick="toggleMelody()" class="bg-white text-rose-600 border border-rose-200 px-4 py-2 rounded-full text-xs font-semibold flex gap-2 shadow-sm">
+          <i id="music-icon" data-lucide="music" class="w-4 h-4"></i>
+          <span id="music-text">Включить музыку 🎵</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    // ---- МУЗЫКА ----
+    let audioCtx = null;
+    let melodyInterval = null;
+    let isPlaying = false;
+
+    const notes = [
+      { f: 261.63, d: 300 }, { f: 261.63, d: 300 }, { f: 293.66, d: 600 },
+      { f: 261.63, d: 600 }, { f: 349.23, d: 600 }, { f: 329.63, d: 1200 },
+      { f: 261.63, d: 300 }, { f: 261.63, d: 300 }, { f: 293.66, d: 600 },
+      { f: 261.63, d: 600 }, { f: 392.00, d: 600 }, { f: 349.23, d: 1200 }
+    ];
+
+    function playTone(freq, duration) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration/1000);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration/1000);
+    }
+
+    function playMelodyLoop() {
+      let index = 0;
+      function playNext() {
+        if (!isPlaying) return;
+        const note = notes[index];
+        playTone(note.f, note.d);
+        index = (index + 1) % notes.length;
+        melodyInterval = setTimeout(playNext, note.d + 50);
+      }
+      playNext();
+    }
+
+    function toggleMelody() {
+      const btnText = document.getElementById('music-text');
+      const icon = document.getElementById('music-icon');
+      if (isPlaying) {
+        isPlaying = false;
+        clearTimeout(melodyInterval);
+        btnText.innerText = "Включить музыку 🎵";
+        icon.setAttribute('data-lucide', 'music');
+        lucide.createIcons();
+      } else {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        isPlaying = true;
+        playMelodyLoop();
+        btnText.innerText = "Выключить музыку 🔇";
+        icon.setAttribute('data-lucide', 'volume-2');
+        lucide.createIcons();
+      }
+    }
+
+    // ---- КОНВЕРТ ----
+    function openEnvelope() {
+      confetti({ particleCount: 130, spread: 70, origin: { y: 0.6 } });
+      document.getElementById('envelope-scene').classList.add('hidden');
+      document.getElementById('card-scene').classList.remove('hidden');
+      setTimeout(() => {
+        let end = Date.now() + 2000;
+        (function frame() {
+          confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0 } });
+          confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1 } });
+          if (Date.now() < end) requestAnimationFrame(frame);
+        })();
+      }, 300);
+    }
+
+    // ---- СВЕЧИ ----
+    const candles = { 1: true, 2: true, 3: true };
+    function extinguishCandle(id) {
+      if (!candles[id]) return;
+      const flame = document.getElementById(`flame-${id}`);
+      flame.style.transform = 'scale(0)';
+      flame.style.opacity = '0';
+      flame.classList.remove('candle-glow');
+      candles[id] = false;
+      playTone(150, 90);
+      confetti({ particleCount: 12, spread: 25, origin: { y: 0.55, x: 0.3 + id * 0.2 } });
+      
+      if (!candles[1] && !candles[2] && !candles[3]) {
+        const msg = document.getElementById('cake-success-msg');
+        if (msg.classList.contains('hidden')) {
+          msg.classList.remove('hidden');
+          confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+          if (!isPlaying) toggleMelody();
+        }
+      }
+    }
+
+    // ---- ПОЖЕЛАНИЯ ----
+    const wishes = [
+      "Пусть улыбка сияет ярче солнца! ☀️",
+      "Ты — самая лучшая мама во Вселенной! 💖",
+      "Здоровья, радости и много цветов! 🌸",
+      "Пусть все мечты сбываются мгновенно! ✨",
+      "Ты мой главный человек. Люблю! 🥰",
+      "Будь всегда счастливой, мамуля!",
+      "Пусть удача ходит за тобой по пятам! 🍀"
+    ];
+    let lastWish = -1;
+    function getNewWish() {
+      const el = document.getElementById('wish-display');
+      el.style.opacity = '0';
+      setTimeout(() => {
+        let r;
+        do { r = Math.floor(Math.random() * wishes.length); } while (r === lastWish);
+        lastWish = r;
+        el.innerText = wishes[r];
+        el.style.opacity = '1';
+        confetti({ particleCount: 30, spread: 45, origin: { y: 0.7 } });
+      }, 150);
+    }
+  </script>
+</body>
+</html>
